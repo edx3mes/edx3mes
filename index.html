@@ -11,15 +11,34 @@
     </head>
 
     <body>
-        <input id="color" type="color" />
-        <button id="borrar">Borrar <i class="fas fa-eraser"></i></button>
-        <button id="imprimir">Imprimir <i class="fas fa-print"></i></button>
-        <button id="restore">Restaurar <i class="fas fa-upload"></i></button>
-        <select id="dibujos"></select>
-        <canvas id="canvas" class="canvas">The browser doesn't support the canvas element</canvas>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <input id="color" type="color" />
+                </div>
+                <div class="col">
+                    <button id="borrar">Borrar <i class="fas fa-eraser"></i></button>
+                </div>
+                <div class="col">
+                     <button id="imprimir">Imprimir <i class="fas fa-print"></i></button>
+                </div>
+                <div class="col">
+                    <button id="restore">Restaurar <i class="fas fa-upload"></i></button>
+               </div>
+               <div class="col">
+                    <select id="dibujos"></select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <canvas id="canvas" class="canvas">The browser doesn't support the canvas element</canvas>
+                </div>
+            </div>
+        </div>
         <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
             integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+        <script src="./index.js"></script>
     </body>
 
 </html>
