@@ -1,7 +1,12 @@
 $(document).ready(function () {
     fillSelectDibujos();
+    fillCursorSizes();
+    fillLayers();
+    cargaContextoCanvas('canvas');
+    div = document.getElementById("canvas");
 });
-/* declare canvas vars*/
+/* declare canvas var*/
+var div = "";
 let canvas = $("#canvas");
 
 //indico la URL de la imagen
@@ -14,10 +19,10 @@ var x = 5;
 var y = 5;
 var w = 10;
 var h = 10;
+var CURSOR_SIZE = 2;
 
-canvas.css("width", "800px");
-canvas.css("height", "500px");
-/* canvas.css("background-color","lightgray"); */
+canvas.css("width", "100%");
+canvas.css("height", "100%");
 canvas.css("border", "1px solid");
 
 var JSON_PAINTS = [
@@ -29,6 +34,69 @@ var JSON_PAINTS = [
     }
 ];
 
+var JSON_CURSOR_SIZE = [
+    {
+        id: 1, value: 2
+    },
+    {
+        id: 2, value: 4
+    },
+    {
+        id: 3, value: 8
+    }
+];
+
+var LAYERS_ADD = [
+    { 
+        layer: 1 
+    }
+];
+
+function debounce(func, timeout = 300){
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+}
+
+$('#execute_action').on('click', function () {
+    let option_selected = $('#layer_option_action option:selected').val();
+    console.log('option_selected', option_selected);
+    switch (option_selected) {
+        case 'addLayer':
+            let layerNumber = LAYERS_ADD.length ++;
+            setInterval(() => {
+                LAYERS_ADD.push({ layer: layerNumber });
+                let content = `<canvas id="canvas${el.layerNumber}" class="canvas" style="z-index:${el.layerNumber};">The browser doesn't support the canvas element</canvas>`;
+                $('#stack_canvas').html(content);
+            }, 250);
+        break;
+        case 'deleteLayer':
+            let index = LAYERS_ADD.findIndex(el => el.layer == $('#layer_option option:selected').val());
+            if (index !== -1) {
+                LAYERS_ADD.splice(index, 1);
+            }
+        break;
+        case 'deleteAllLayer':
+            LAYERS_ADD = [];
+            LAYERS_ADD.push({ layer: 1 });
+            $('#stack_canvas').html(`<canvas id="canvas${1}" class="canvas">The browser doesn't support the canvas element</canvas>`);
+        break;
+    }
+    setTimeout(function() {
+        fillLayers();
+    },250)
+})
+
+function fillLayers() {
+    let content = ``;
+    LAYERS_ADD.forEach(el => {
+        content += `<option value="${el.layer}">Capa ${el.layer}</option>`;
+    })
+    $('#layer_option').append(content);
+}
+
 function fillSelectDibujos() {
     let content = ``;
     content += `<option value="">Por favor seleccione</option>`;
@@ -38,15 +106,29 @@ function fillSelectDibujos() {
     $('#dibujos').append(content);
 }
 
+function fillCursorSizes() {
+    let content = ``;
+    content += `<option value="">Por favor seleccione</option>`;
+    JSON_CURSOR_SIZE.forEach(el => {
+        content += `<option value="${el.value}">${el.value}</option>`;
+    })
+    $('#size_cursor').append(content);
+}
+
 $('#dibujos').change(function () {
     console.log('cambio', $(this).val());
+    JSON_SAVE_CHANGES = []; //clear changes
     limpiar();
     if ($(this).val() !== '') {
         let paint = JSON_PAINTS.find(el => el.id == $(this).val());
         img = new Image();
         img.src = paint.url;
-        drawDibujo(img, 0, 0, div.width, div.height);
+        drawDibujo(LAYER_SELECTED,img, 0, 0, div.width, div.height);
     }
+})
+
+$('#size_cursor').change(function () {
+    CURSOR_SIZE = $(this).val();
 })
 
 function cargaContextoCanvas(idCanvas) {
@@ -70,11 +152,6 @@ function drawDibujo(img, x, y, w, h) {
     }
 }
 
-/*******************************************/
-cargaContextoCanvas('canvas');
-var div = document.getElementById("canvas");
-/*******************************************/
-
 function getMousePos(evt) {
     var div = document.getElementById("canvas");
     var rect = div.getBoundingClientRect();
@@ -96,41 +173,41 @@ var posx = 0;
 var posy = 0;
 var ctx = cargaContextoCanvas('canvas');
 var setint = '';
-var colorToDraw = 'no';
+var colorToDraw = '';
 $("canvas").on({
 
     mousemove: function (e) {
         posx = getMousePos(e).x;
         posy = getMousePos(e).y;
         ctx = cargaContextoCanvas('canvas');
-        /* if(colorToDraw != 'no'){
-            console.log('mousemove',posx,posy);
-        } */
     },
 
     mousedown: function (e) {
+        $('canvas').addClass('brush');
+        $('canvas').css('color', 'green');
         clearInterval(setint);
+        colorToDraw = $('#color').val();
         if (colorToDraw != '') {
             setint = setInterval(function () {
-                draw(colorToDraw, posx, posy, 2, 2);
-                saveData(colorToDraw, posx, posy);
+                draw(colorToDraw, posx, posy, CURSOR_SIZE, CURSOR_SIZE);
+                saveData(colorToDraw, posx, posy, CURSOR_SIZE, CURSOR_SIZE);
             }, 10)
         }
     },
 
     mouseup: function (e) {
-        colorToDraw = '';
+        $('canvas').removeClass('flying');
+        $('canvas').css('color', 'white');
         clearInterval(setint);
-        draw(colorToDraw, posx, posy, 2, 2);
+        colorToDraw = '';
     }
 
 });
 
 function draw(color, posx, posy, w, h) {
+    console.log('draw', color, posx, posy, w, h)
     ctx.fillStyle = color;
     ctx.fillRect(posx, posy, w, h);
-    //ctx.drawRect(iconToDraw, posx, posy , w, h);
-    //ctx.stroke();
 }
 
 function limpiar() {
@@ -175,15 +252,17 @@ $('#restore').on('click', function () {
     restoreChangesSavedInJSON();
 });
 
-JSON_SAVE_CHANGES = [];
-function saveData(color, positionx, positiony) {
-    JSON_SAVE_CHANGES.push({ color: color, x: positionx, y: positiony });
+var JSON_SAVE_CHANGES = [];
+function saveData(color, positionx, positiony, width, height) {
+    // console.log('saveData',color, positionx, positiony);
+    JSON_SAVE_CHANGES.push({ color: color, x: positionx, y: positiony, w: width, h: height });
 }
 
 function restoreChangesSavedInJSON() {
     console.log('restore', JSON_SAVE_CHANGES);
+    ctx = cargaContextoCanvas('canvas');
     JSON_SAVE_CHANGES.forEach(el => {
-        draw(el.color, el.positionx, el.positiony, 2, 2);
+        draw(el.color, el.x, el.y, el.w, el.h);
     })
 }
 
