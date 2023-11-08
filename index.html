@@ -1,29 +1,42 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="es-ES">
     <head>
         <title>Pizzara</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous" />
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
             integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
             crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
-            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc="
+            crossorigin="anonymous"></script>
+        <script
+            src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
         <script src="./index.js"></script>
         <style>
             @media print {
                 button {
                     display: none;
                 }
+
                 select {
                     display: none;
                 }
+
                 canvas {
                     border: 2px solid white !important;
                 }
+
                 div {
                     border: 2px solid white !important;
+                }
+
+                input {
+                    display: none;
                 }
             }
             canvas {
@@ -35,33 +48,50 @@
                 border: 2px solid #fff;
                 border-radius: 50%;
             }
-            .brush{
+            .brush {
                 /* cursor: url(https://www.flaticon.com/free-icons/paint-brush), auto; */
                 cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADWElEQVR4nO2Wy0tUURzHj6OSpj10oVipc46WEGmG4BOaoIcWtoicc8ZxwlZCZhC0KIjMf6BFqzTN6KGEj5GMBCs0ykWmBbXoQaSGjZuQKCU0J78xV6a5o+M4k3eud2C+8NvMnMXnc87v/s4hJJRQQgnFGXTlm9Ga9hHdpetJsAVdeQKN0fOoJ8CdVFtQSUAO76xgkYA1txyNUe7wzmpN/4I2YzQJqp2vX1QdOe8w3BBJtBa0e9l5eTWEA8/O9GhKAr7CO+thCTBU16kJCXTkm/2Cd1RXITBct/YS8AX+eiTQvEn2mw54enJBYC0l4OvO3zcsgL44D/RXAgM1Lvi1koC10OJz27RnLwVeVNP1HLZjyaO20qTA3xOwFpSvOCrdLrAtK8KP7Nbh8y4CW+46W0Allm8bHdCg8yxwO2l5+GsueGdN5EWNoyonUt2ev7EBeHkReGIC7mW4ZJqigb4TK+68vKZKEgBOOxWVQL8hAjfjZ7y2Sl+FC3DwAvC8ekHKX3jBnHVXMQFJoqOgGE0x9mUFbiUAQ7U+fbA+wAOCvVVUwCeJR2VKwQOcVisuIEl0Fx5CU6xnifYsZeAF/QnjztiACHg9iRaqADwDOGsJGLybRPPmOTeBniOrhxeOShMBF5Akes056N7/A9Zc4LFRIXgGGPUZqghIEoOXd2CozqYYvGBAZWqUagKeJFYFLxhgogdVFZBLrBpeSFNoDoLVqn4Ss21VmWNFsb/l4COZYZg+nOgHPJOLfIWgNShJX6eaxOSBuOLR7HD7/+08W2as0nHHxQaDIUIdiX0bi8eyI+yKwAu3E3kFkapXRWL26NYscDbhcTcFa4Rgp8D1xeD0qn+nwcZgYQmqSDjmOTizQbBJCdSUvmfJGkLCIGirnycxoFo7Od40K73tYU6JA6ff/JIw0dNES4Fgl7wA2yHoJwj2S/bbJCyJMUQrgXFbPASd8tAuM+CsSFpTkZIEwT64nhzUQrQUePqgOXvgvoadlf3XTrQUiLRkCPZ90dR67fjQ/63h7IpM4A3RWmCiZeDsz6KTaIRRbwCn56SWcgm8J1oMOD0OzqZ9uBO01ULywLydgbNer5OJ6/cSrQecFUHQ5oWHnQQ+Lz0p1uLJrcilaNHQ7A8lFKK9/AUVVsk7WByb2QAAAABJRU5ErkJggg==), auto;
                 justify-content: center;
-                /* cursor: url(https://cur.cursors-4u.net/nature/nat-11/nat1021.cur), default; */
                 text-align: center;
             }
-            .feeding{
+            .feeding {
                 cursor: url('https://res.cloudinary.com/dvkugaw3b/image/upload/v1641562029/cursor-worm_kij6gi.png'), auto;
             }
+
+            .parent{
+                width:1000px;
+                height:500px;
+                position: relative !important;
+            }
+
+            .children {
+                top: 0px;
+                left: 0px;
+                position: absolute !important; 
+            }
+
+            /* .invisible {
+                display: none;
+            } */
         </style>
     </head>
-
     <body>
         <div class="container">
 
             <div class="row">
                 <div class="col-md-2">
+                    <input id="color" type="color" />
+                </div>
+                <div class="col-md-2">
                     <button id="borrar">Borrar Todo <i class="fas fa-eraser"></i></button>
                 </div>
                 <div class="col-md-2">
-                     <button id="imprimir">Imprimir <i class="fas fa-print"></i></button>
+                    <button id="imprimir">Imprimir <i class="fas fa-print"></i></button>
                 </div>
                 <div class="col-md-2">
                     <button id="restore">Restaurar <i class="fas fa-upload"></i></button>
-               </div>
-               <div class="col-md-2">
+                </div>
+                <div class="col-md-2">
                     <select id="dibujos"></select>
                 </div>
                 <div class="col-md-2">
@@ -84,12 +114,11 @@
             </div>
 
             <div class="row" style="margin: 10px;">
-                <div id="stack_canvas" class="col">
+                <div id="stack_canvas" class="col parent">
                     <!-- <canvas id="canvas" class="canvas">The browser doesn't support the canvas element</canvas> -->
                 </div>
             </div>
 
         </div>
     </body>
-
 </html>
