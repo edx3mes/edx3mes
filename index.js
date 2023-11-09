@@ -194,14 +194,17 @@ function updateLayers() {
         case 'addLayer':
 
             div = document.getElementById(LAYER_SELECTED);
-            content = $('#stack_canvas').html();
+            // content = $('#stack_canvas').html();
 
             const layerNumber = LAYERS_ADD.length + 1;
             LAYERS_ADD.push({ id: layerNumber, layer: `canvas${layerNumber}` });
             LAYER_SELECTED = LAYERS_ADD[ layerNumber - 1 ]['layer'];
             
-            content += `<canvas id="${LAYER_SELECTED}" class="canvas" style="z-index:${layerNumber};">The browser doesn't support the canvas element</canvas>`;
-            $('#stack_canvas').html(content);
+            // content += `<canvas id="${LAYER_SELECTED}" class="canvas" style="z-index:${layerNumber};">The browser doesn't support the canvas element</canvas>`;
+            // $('#stack_canvas').html(content);
+
+            content = `<canvas id="${LAYER_SELECTED}" class="canvas" style="z-index:${layerNumber};">The browser doesn't support the canvas element</canvas>`;
+            $('#stack_canvas').append(content);
             
             $(`#${LAYER_SELECTED}`).css("width", "100%");
             $(`#${LAYER_SELECTED}`).css("height", "100%");
@@ -313,17 +316,20 @@ function draw(color, posx, posy, w, h) {
 }
 
 function limpiar() {
+
     ctx = cargaContextoCanvas(LAYER_SELECTED);
     ctx.clearRect(0, 0, div.width, div.height); //limpia
     div = document.getElementById(LAYER_SELECTED);// get contexto actual
     cargaContextoCanvas(LAYER_SELECTED); //vuelve a cargar el contexto limpia
-    let paint = JSON_PAINTS.find(el => el.id == $('#dibujos option:selected').val());
-    if (typeof paint !== 'undefined') {
-        img = new Image();
-        img.src = paint.url;
-        drawDibujo(LAYER_SELECTED, img, 0, 0, div.width, div.height);
-        clearInterval(setint);
-    }
+
+    // let paint = JSON_PAINTS.find(el => el.id == $('#dibujos option:selected').val());
+    // if (typeof paint !== 'undefined') {
+    img = new Image();
+    img.src = '';
+    drawDibujo(LAYER_SELECTED, img, 0, 0, div.width, div.height);
+    clearInterval(setint);
+    // }
+
 }
 
 var JSON_SAVE_CHANGES = [];
