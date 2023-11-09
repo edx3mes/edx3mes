@@ -6,7 +6,7 @@ $(document).ready(function () {
     // fillLayers();
 
     $('#execute_action').click( function() {
-        console.log('klk');
+        // console.log('klk');
         updateLayers();
     })
 
@@ -56,7 +56,7 @@ $(document).ready(function () {
 
     $('#dibujos').change(function () {
         div = document.getElementById(LAYER_SELECTED);
-        console.log('cambio', $(this).val());
+        // console.log('cambio', $(this).val());
         JSON_SAVE_CHANGES = []; //clear changes
         limpiar();
         if ($(this).val() !== '') {
@@ -81,7 +81,7 @@ $(document).ready(function () {
             }
         })
 
-        console.log('layer_option', $(this).val());
+        // console.log('layer_option', $(this).val());
         canvas = $('#'+$(this).val());
         canvas.css("width", "100%");
         canvas.css("height", "100%");
