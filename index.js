@@ -1,59 +1,156 @@
+document.addEventListener("DOMContentLoaded", function(event) {
+    var cursor = document.querySelector(".custom-cursor");
+    var links = document.querySelectorAll("a");
+    var initCursor = false;
+  
+    for (var i = 0; i < links.length; i++) {
+      var selfLink = links[i];
+      selfLink.addEventListener("mouseover", function() {
+        cursor.classList.add("custom-cursor--link");
+      });
+      selfLink.addEventListener("mouseout", function() {
+        cursor.classList.remove("custom-cursor--link");
+      });
+    }
+  
+    window.onmousemove = function(e) {
+      var mouseX = e.clientX;
+      var mouseY = e.clientY;
+  
+      if (!initCursor) {
+        // cursor.style.opacity = 1;
+        TweenLite.to(cursor, 0.3, {
+          opacity: 1
+        });
+        initCursor = true;
+      }
+  
+      TweenLite.to(cursor, 0, {
+        top: mouseY + "px",
+        left: mouseX + "px"
+      });
+    };
+  
+    window.onmouseout = function(e) {
+      TweenLite.to(cursor, 0.3, {
+        opacity: 0
+      });
+      initCursor = false;
+    };
+  });
+  
+
 $(document).ready(function () {
+
+    // FILL CURSOR SIZES 
+    let count = 0;
+    for (let index = 0; index < 50; index++) {
+        if ((index % 2) !== 0) {
+            count++;
+            JSON_CURSOR_SIZE.push({ id: count, value: index })
+        }
+    }
 
     fillSelectDibujos();
     fillCursorSizes();
     updateLayers();
+    selectTool('pencil');
     // fillLayers();
 
-    $('#execute_action').click( function() {
-        // console.log('klk');
+    $('#execute_action').click(function () {
         updateLayers();
     })
 
     $('#stack_canvas').on({
+
         mousemove: function (e) {
 
+            div  = document.getElementById(LAYER_SELECTED);
             posx = getMousePos(e).x;
             posy = getMousePos(e).y;
             ctx  = cargaContextoCanvas(LAYER_SELECTED);
 
-            if( LAYER_SELECTED != '' ) {
+            if (LAYER_SELECTED != '') {
                 $(`#${LAYER_SELECTED}`).on({
-        
-                    // mousemove: function (e) {
-                    //     // console.log(LAYER_SELECTED,'mousemove');
-                    //     posx = getMousePos(e).x;
-                    //     posy = getMousePos(e).y;
-                    //     ctx  = cargaContextoCanvas(LAYER_SELECTED);
-                    // },
-                
+
+                    mouseover: function () {
+                        $(`#${LAYER_SELECTED}`).addClass(TOOL_NAME);
+                    },
+
+                    mouseout: function () {
+                        // console.log('stack_canvas','blur');
+                        clearInterval(setint);
+                        colorToDraw = '';
+                        clearCursor();
+                    },
+
                     mousedown: function (e) {
                         // console.log(LAYER_SELECTED,'mousedown');
-                        $(`#${LAYER_SELECTED}`).addClass('brush');
-                        $(`#${LAYER_SELECTED}`).css('color', 'green');
                         clearInterval(setint);
+                        $(`#${LAYER_SELECTED}`).addClass(TOOL_NAME);
+
                         colorToDraw = $('#color').val();
                         if (colorToDraw != '') {
                             setint = setInterval(function () {
-                                draw(colorToDraw, posx, posy, CURSOR_SIZE, CURSOR_SIZE);
-                                saveData(LAYER_SELECTED, colorToDraw, posx, posy, CURSOR_SIZE, CURSOR_SIZE);
-                            }, 10)
+                                switch (TOOL_NAME) {
+                                    case 'pencil':
+                                        draw(colorToDraw, posx, posy, CURSOR_SIZE, CURSOR_SIZE);
+                                        saveData(LAYER_SELECTED, colorToDraw, posx, posy, CURSOR_SIZE, CURSOR_SIZE);
+                                        break;
+                                    case 'brush':
+                                        draw(colorToDraw, posx, posy, CURSOR_SIZE, CURSOR_SIZE);
+                                        saveData(LAYER_SELECTED, colorToDraw, posx, posy, CURSOR_SIZE, CURSOR_SIZE);
+                                        break;
+                                    case 'filter':
+                                        draw(colorToDraw, 0, 0, div.width, div.height);
+                                        saveData(LAYER_SELECTED, colorToDraw, posx, posy, CURSOR_SIZE, CURSOR_SIZE);
+                                        break;
+                                    case 'eraser':
+                                        erase(posx, posy, CURSOR_SIZE, CURSOR_SIZE);
+                                        break;
+                                }
+                            }, 10);
                         }
                     },
-                
+
                     mouseup: function (e) {
                         // console.log(LAYER_SELECTED,'mouseup');
-                        $(`#${LAYER_SELECTED}`).removeClass('brush');
-                        $(`#${LAYER_SELECTED}`).css('color', 'white');
+                        // $(`#${LAYER_SELECTED}`).css('color', 'white');
                         clearInterval(setint);
                         colorToDraw = '';
+                    },
+
+                    click: function (e) {
+                        switch (TOOL_NAME) {
+                            case 'filter':
+                                draw(colorToDraw, 0, 0, div.width, div.height);
+                                saveData(LAYER_SELECTED, colorToDraw, posx, posy, CURSOR_SIZE, CURSOR_SIZE);
+                                break;
+                        }
                     }
-                
+
                 });
             }
-        }
+        },
+
     })
 
+    $('#upload_paint').change(function () {
+        var fileInput = $(this);
+        if (fileInput.length && fileInput[0].files && fileInput[0].files.length) {
+          var url = window.URL || window.webkitURL;
+          var img = new Image();
+          img.onload = function() {
+            alert('Valid Image');
+          };
+          img.onerror = function() {
+            alert('Invalid image');
+          };
+          img.src = url.createObjectURL(fileInput[0].files[0]);
+          drawDibujo(LAYER_SELECTED, img, 0, 0, div.width, div.height);
+        }
+    })
+    
     $('#dibujos').change(function () {
         div = document.getElementById(LAYER_SELECTED);
         // console.log('cambio', $(this).val());
@@ -72,21 +169,21 @@ $(document).ready(function () {
         LAYER_SELECTED = $(this).val();
         div = document.getElementById(LAYER_SELECTED);
 
-        $('#stack_canvas').find('canvas').each(function() {
+        $('#stack_canvas').find('canvas').each(function () {
             // console.log($(this).attr('id'));
             $(`#${$(this).attr('id')}`).addClass('children');
-            $(`#${$(this).attr('id')}`).css('z-index',0);
-            if( $(this).attr('id') == LAYER_SELECTED ) {
-                $(`#${$(this).attr('id')}`).css('z-index',1);
+            $(`#${$(this).attr('id')}`).css('z-index', 0);
+            if ($(this).attr('id') == LAYER_SELECTED) {
+                $(`#${$(this).attr('id')}`).css('z-index', 1);
             }
         })
 
         // console.log('layer_option', $(this).val());
-        canvas = $('#'+$(this).val());
+        canvas = $('#' + $(this).val());
         canvas.css("width", "100%");
         canvas.css("height", "100%");
         canvas.css("border", "1px solid");
-       
+
     })
 
     $('#size_cursor').change(function () {
@@ -107,10 +204,41 @@ $(document).ready(function () {
         restoreChangesSavedInJSON();
     });
 
+    $('#reestablish').click(function () {
+        LAYERS_ADD = [];
+        selectTool('pencil');
+        $('#layer_option_action').val('addLayer');
+        $('#size_cursor').val(1);
+        $('#stack_canvas').html('');
+        $('#dibujos').val('');
+        updateLayers();
+        fillLayers();
+    });
+
 });
 
+function drawCursorInvisible(x, y, w, h) {
+    // ctx.clearRect(x,y,w,h);
+    // let color = 'lightgray';
+    // draw(color, x, y, w, h);
+
+    ctx.shadowInset = true;
+    ctx.shadowBlur = CURSOR_SIZE;
+    ctx.shadowColor = 'CURSOR_SIZE';
+    ctx.shadowOffsetX = 5;
+    ctx.shadowOffsetY = 5;
+    // ctx.fillStyle = 'red';
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (x != -1 && y != -1) {
+        ctx.beginPath();
+        ctx.arc(x, y, (CURSOR_SIZE / 2), 0, 2 * Math.PI);
+        ctx.fill();
+    }
+}
+
 /* declare canvas var*/
-var div    = null;
+var div = null;
 var canvas = $("#canvas1");
 canvas.css("width", "100%");
 canvas.css("height", "100%");
@@ -133,6 +261,7 @@ var h = 10;
 //positions
 var posx = 0;
 var posy = 0;
+
 // time interval
 var setint = '';
 
@@ -141,9 +270,9 @@ var colorToDraw = '';
 var iconToDraw = $('#color').val();
 
 // VARIABLES QUE DE LAS ACCIONES
-var CURSOR_SIZE    = 2;
+var CURSOR_SIZE = 2;
 var LAYER_SELECTED = '';
-var LAYERS_ADD     = [];
+var LAYERS_ADD = [];
 
 var JSON_PAINTS = [
     {
@@ -154,29 +283,18 @@ var JSON_PAINTS = [
     }
 ];
 
-var JSON_CURSOR_SIZE = [
-    {
-        id: 1, value: 2
-    },
-    {
-        id: 2, value: 4
-    },
-    {
-        id: 3, value: 8
-    },
-    {
-        id: 4, value: 10
-    },
-    {
-        id: 5, value: 12
-    },
-    {
-        id: 6, value: 16
-    },
-    {
-        id: 7, value: 32
-    }
-];
+var JSON_CURSOR_SIZE = [];
+var TOOL_NAME = "pencil";
+function selectTool(name) {
+    TOOL_NAME = name;
+}
+
+function clearCursor() {
+    $(`#${LAYER_SELECTED}`).removeClass('brush');
+    $(`#${LAYER_SELECTED}`).removeClass('filter');
+    $(`#${LAYER_SELECTED}`).removeClass('pencil');
+    $(`#${LAYER_SELECTED}`).removeClass('eraser');
+}
 
 function debounce(func, timeout = 300) {
     let timer;
@@ -192,38 +310,30 @@ function updateLayers() {
     let content = ``;
     switch (option_selected) {
         case 'addLayer':
-
             div = document.getElementById(LAYER_SELECTED);
             // content = $('#stack_canvas').html();
-
             const layerNumber = LAYERS_ADD.length + 1;
             LAYERS_ADD.push({ id: layerNumber, layer: `canvas${layerNumber}` });
-            LAYER_SELECTED = LAYERS_ADD[ layerNumber - 1 ]['layer'];
-            
+            LAYER_SELECTED = LAYERS_ADD[layerNumber - 1]['layer'];
             // content += `<canvas id="${LAYER_SELECTED}" class="canvas" style="z-index:${layerNumber};">The browser doesn't support the canvas element</canvas>`;
             // $('#stack_canvas').html(content);
-
             content = `<canvas id="${LAYER_SELECTED}" class="canvas" style="z-index:${layerNumber};">The browser doesn't support the canvas element</canvas>`;
             $('#stack_canvas').append(content);
-            
             $(`#${LAYER_SELECTED}`).css("width", "100%");
             $(`#${LAYER_SELECTED}`).css("height", "100%");
             $(`#${LAYER_SELECTED}`).css("border", "2px solid");
-
             setTimeout(() => {
                 $('#layer_option').val(LAYER_SELECTED);
                 $('#layer_option').change();
             }, 50);
-
             cargaContextoCanvas(LAYER_SELECTED);
-
-        break;
+            break;
         case 'deleteLayer':
             let index = LAYERS_ADD.findIndex(el => el.layer == $('#layer_option option:selected').val());
             if (index !== -1) {
                 LAYERS_ADD.splice(index, 1);
             }
-        break;
+            break;
         case 'deleteAllLayer':
             LAYERS_ADD = [];
             LAYERS_ADD.push({ id: 1, layer: "canvas1" });
@@ -233,7 +343,7 @@ function updateLayers() {
             $(`#${LAYER_SELECTED}`).css("width", "100%");
             $(`#${LAYER_SELECTED}`).css("height", "100%");
             $(`#${LAYER_SELECTED}`).css("border", "2px solid");
-        break;
+            break;
     }
     fillLayers();
     cargaContextoCanvas(LAYER_SELECTED);
@@ -242,7 +352,7 @@ function updateLayers() {
 }
 
 function fillLayers() {
-    console.log('fillLayers', LAYERS_ADD );
+    // console.log('fillLayers', LAYERS_ADD );
     $("#layer_option").empty();
     let content = ``;
     LAYERS_ADD.forEach(el => {
@@ -264,7 +374,7 @@ function fillSelectDibujos() {
 function fillCursorSizes() {
     let content = ``;
     $("#size_cursor").empty();
-    content += `<option value="">Por favor seleccione</option>`;
+    // content += `<option value="">Por favor seleccione</option>`;
     JSON_CURSOR_SIZE.forEach(el => {
         content += `<option value="${el.value}">${el.value}</option>`;
     })
@@ -283,7 +393,7 @@ function cargaContextoCanvas(idCanvas) {
 }
 
 function drawDibujo(layer, img, x, y, w, h) {
-    console.log('drawDibujo', layer, img, x, y, w, h);
+    // console.log('drawDibujo', layer, img, x, y, w, h);
     var ctx = cargaContextoCanvas(layer);
     if (ctx) {
         img.onload = function () {
@@ -293,7 +403,7 @@ function drawDibujo(layer, img, x, y, w, h) {
 }
 
 function getMousePos(evt) {
-    console.log('getMousePos',LAYER_SELECTED);
+    // console.log('getMousePos',LAYER_SELECTED);
     div = document.getElementById(LAYER_SELECTED);
     var rect = div.getBoundingClientRect();
     let x = evt.clientX - rect.left;
@@ -312,7 +422,26 @@ $('#color').on('change', function () {
 function draw(color, posx, posy, w, h) {
     // console.log('draw', color, posx, posy, w, h)
     ctx.fillStyle = color;
-    ctx.fillRect(posx, posy, w, h);
+    switch (TOOL_NAME) {
+        case 'pencil':
+            ctx.beginPath();
+            ctx.arc(posx, posy, 0.5, 0, 2 * Math.PI);
+            // ctx.stroke();
+            ctx.fill();
+            // ctx.lineWidth = 0;
+            // ctx.strokeStyle = '';
+            // ctx.stroke();
+            break;
+        case 'brush':
+            ctx.fillRect(posx, posy, w, h);
+            break;
+        case 'filter':
+            ctx.fillRect(posx, posy, w, h);
+            break;
+        case 'eraser':
+            ctx.fillRect(posx, posy, w, h);
+            break;
+    }
 }
 
 function limpiar() {
@@ -322,26 +451,28 @@ function limpiar() {
     div = document.getElementById(LAYER_SELECTED);// get contexto actual
     cargaContextoCanvas(LAYER_SELECTED); //vuelve a cargar el contexto limpia
 
-    // let paint = JSON_PAINTS.find(el => el.id == $('#dibujos option:selected').val());
-    // if (typeof paint !== 'undefined') {
     img = new Image();
     img.src = '';
     drawDibujo(LAYER_SELECTED, img, 0, 0, div.width, div.height);
     clearInterval(setint);
-    // }
 
 }
 
 var JSON_SAVE_CHANGES = [];
-function saveData(layer ,color, positionx, positiony, width, height) {
-    console.log('saveData',color, positionx, positiony);
-    JSON_SAVE_CHANGES.push({ layer: layer, color: color, x: positionx, y: positiony, w: width, h: height });
+function saveData(layer, color, positionx, positiony, width, height) {
+    // console.log('saveData',color, positionx, positiony);
+    JSON_SAVE_CHANGES.push({ layer: layer, color: color, x: positionx, y: positiony, cursor_w: width, cursor_h: height });
 }
 
 function restoreChangesSavedInJSON() {
-    console.log('restore', JSON_SAVE_CHANGES);
+    // console.log('restore', JSON_SAVE_CHANGES);
     JSON_SAVE_CHANGES.forEach(el => {
-        draw(el.layer, el.color, el.x, el.y, el.w, el.h);
+        draw(el.layer, el.color, el.x, el.y, el.cursor_w, el.cursor_h);
     })
 }
 
+function erase(posx, posy, w, h) {
+    console.log('erase', posx, posy, w, h);
+    ctx = cargaContextoCanvas(LAYER_SELECTED);
+    ctx.clearRect(posx, posy, w, h); //limpia
+}
