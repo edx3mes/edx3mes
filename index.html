@@ -17,10 +17,12 @@
     </head>
     <body>
         <div class="container">
-            <div class="row">
+
+            <div class="row g-2">
                 <h1 style="text-align:center;color:white;">PIZARRA</h1>
                 <hr>
             </div>
+
             <div class="row g-2">
 
                 <div class="col-md-2">
@@ -60,17 +62,16 @@
 
                 <div class="col-md-6">
                     <button id="borrar" class="btn btn-warning">Limpiar Capa
-                        <i class="fas fa-fa-times"></i>
+                        <i class="fa fa-trash"></i>
                     </button>
                     <button class="btn btn-info" id="imprimir">Imprimir
-                        <i class="fas fa-print"></i>
+                        <i class="fa fa-print"></i>
                     </button>
                     <button class="btn btn-primary" id="restore">Restaurar
-                        <i class="fas fa-upload"></i>
+                        <i class="fa fa-upload"></i>
                     </button>
                     <button id="reestablish" class="btn btn-danger">Restablecer
-                        Todo
-                        <i class="fas fa-fa-times"></i>
+                        <i class="fa fa-refresh"></i>
                     </button>
                 </div>
 
@@ -86,11 +87,16 @@
                 </div>
             </div>
 
-            <div class="row g-2" style="margin: 10px;">
-                <div id="stack_canvas" class="col parent">
-                    <!-- <canvas id="canvas" class="canvas">The browser doesn't support the canvas element</canvas> -->
+            <div class="row g-2">
+                <div class="col-md-12">
+                    <div class="row stack" style="margin: 10px;">
+                        <div id="stack_canvas" class="col parent">
+                            <!-- <canvas id="canvas" class="canvas">The browser doesn't support the canvas element</canvas> -->
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </body>
 </html>
