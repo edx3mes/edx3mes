@@ -1,199 +1,22 @@
 <!DOCTYPE html>
 <html lang="es-ES">
     <head>
+        <!-- TITLE -->
         <title>Pizzara</title>
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-            crossorigin="anonymous" />
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
-            integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
-            crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
-            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc="
-            crossorigin="anonymous"></script>
-        <script
-            src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 
-        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>  -->
-        <script src="./index.js"></script>
-        <!-- <style>
-            @media print {
-                button {
-                    display: none;
-                }
+        <!-- CDN IMPORTS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+       
+        <!-- LOCAL IMPORT -->
+        <script src="./js/index.js"></script>
+        <link rel="stylesheet" type="text/css" href="./css/index.css"  />
 
-                select {
-                    display: none;
-                }
-
-                canvas {
-                    border: 2px solid white !important;
-                }
-
-                div {
-                    border: 2px solid white !important;
-                }
-
-                input {
-                    display: none;
-                }
-                .btn {
-                    display: none;
-                }
-                .form-control {
-                    display: none;
-                }
-                h1 {
-                    display: none;
-                }
-            }
-            canvas {
-                cursor: cell;
-            }
-            canvas :hover {
-                width: 30px;
-                height: 30px;
-                border: 2px solid #fff;
-                border-radius: 50%;
-            }
-            canvas :before {
-                content:"";
-                box-shadow:0 0 20px 40px rgb(16, 172, 8);
-                border-radius: 50%;
-            }
-            .filter {
-                cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAE50lEQVR4nO2bb2gbZRzHf3a4KQ7Ul8NXIqLri2Ttc811c5mysa7odC0u3St1f964P9DaMX05Qd26qaAiyHK3ZogFF0VMh+iU0dzTGqTNmhMjrVkzWNM6q82FJaM63PrIk130crm4NHlyl3L5wo/S5rnn93w/z+/53SWkAHXVVVddddVVF0v5Pf4V3uagW+TwOwLCkoCkSYHD10UOk1JCHTtx+1r8Np2Lzgm1Ln9r6F4RDb8mctJcqWZLD2lOQPhVmgNqUSIa9ogIJ9gb11UHwtNehHdCrYgAuUtA0usCJy1W27yuIt4/CqTBUvNHgTQICJ8tskBFRFK/F0k7TqGhxz92nL+v1HnpWHqNiHAHnSM7l1EOhD+1FIKI8LHCEpUWBCS9dQp9dz+rPHQuOied2wD0m2DVmRf0ZY9woh9JzdXKKTQPIwFJM/l3DLoG6Xkwv9vj/IaHcOJMa+ihauemOfQQRE664nty6B4wS2L2Vpdf9tXc+YL8LSOcgPCfOghHTEnu9/hXFN7nzT+HIoeP51eg9JspDdF7+wlPmzjJsuGVKp9z6AGBwyndM8ITVU8scNK7uvI/XfWkxdaCsE8H4KQJSaWgrvl1gEU63TLcqbstXqh6UgHhmDZpPx98FCySyI08pqvGSROS4ow26YeNQ6vBItHcugrIME/SHiOr9seuCd3xTPLw5QypJLrjGXJr4w4mwctK0XDJyqxLVvoao2RlxQD2T2W8lRrPxb5Y2hQAGhB9FQPo+Z+dv5C6QW4tkgLRv9HX9OPboylTAfAR5WrFAHovZ+aLAbixaOBeFX1NO7Zr4lp2USZXwEzFAA5MZYRyK4CeeVr2dOdzizIVQEQ5zqQJHigCYU8sTdw//meulDALALMmmJMRgKWavxOAr3pPkK3fJ7Lj6M+vX+krGwCw1mEDAEs1fycAOfO5aBuZJjfdHfYBwBuMn31ub8G4q9t32wfAR31nCsb53hDsA2B9ZJ54j/nI3NMvkl+f3ZM1vzH8u30A8EsILpQgTd/8RJznwvYDgIKXiDMw9m/YCgAXSuSZr2kA1zd3GZr/291ZNoBs2S8XABd3HzEEEOs6WDYAeuaXDYCXPwtld1trnj7sdA9I5QPQma9pALyskINnR4j8Qi/566md5Jddh0jPQLDsuZYlAJ5xWAKgO25zAPtiaXsDaNd8yGELAD3xzELOvEf9eKsWwjX+hxGABeYADk2lp/fG0mRbDe08jZYfZg0AjF5hDoCXlQGrzRpF0/loAQDH4NgXzAG0RpJdVpvVB5Lihud/XSD8EnMAjVGy0hVJTlltmh+fz5Z907c/G5p3BMZmGv1Rdh+GatUSSXWyNqR9D29kaKnhGJR3QTXFy8pJZiWsew9fcQxefA+qLkIaeFk5wWLnmRn/cnRx3bnxD8BMuSKpDpecvMTyPXx5uz427RwMW/MlDRQmd7siSY9LTn7iiigTroiSKRVAuWfeERi96RwMTzoD4c/peff4Se1/i7yuuuqyhVYBwIMAsAYAHgaAtQDQBAAbAMANAJsAYDMAbAGAbWpsVyP3+xZ1zCb1mg3qHGvVOdeoOWguy7UaAB6hz0YA0KYxY1a0qbnpGkr+XwRWcgLAMxaYLhZ0LQ4zATjsDgDUsrPyCGy18giAgYo1wfW6JkijWBPMvZ5rgvTaqjbBfwD+t14WR6tioQAAAABJRU5ErkJggg==), auto;
-                justify-content: center;
-                text-align: center;
-            }
-            .pencil {
-                cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADIUlEQVR4nO3ZXUhTcRjH8b9GQVdKXiiUmgo5WzZf2qYus1mKzZeZmi+EmXqcTmfM8EzB2iwzdnInSQmpoLSpF4vUEDQDu7BmYhGI2jBmFIJviwlpYjp8wlUWMqyLLv4HzhfO1W5+H57tYhyE2PDLCTG1pKSkFwqFwqxSqQSIiQUFHX4ulSZBaWnpKkmSpEajcUZMytXV1TsoiGfdQNRWq2ymwfvm6bGuNAAGQVxcXFLSpWKbsVO9OtLfCJPDLTA7/tg0Z+pmDqSVzh141krC4JNrsIl41wUW06MZq0lfCmDYgXCuTZsl6GgqBIeIiW74bGpdXBi5RCCca6HS+xwh5sbbYWH0FiwOZX5bMkriEa7duSwR6usyYSvC3BUNXwcT7M+SMX558VViDMK121Xit38ihjorwNTGBbOB+xsxmLCC7SUopSCySS2BFioFemg/GGnxhzG9P5jaOMxB1Cl5U40VfLhRgOBpnTvzEDWEezRVuMuyAfgrAtffhE6GOBSBpv8JgesldCwCk3TsJTBJx14Ck3TsJTCJvQQusZfAJfYSTL2E9aVEaqDDdiMmIhaN8fCg9th6fWXEpIEO24OYhHhv4MJDbRSoS/hws0IE9ZURHwx0LF4ILYG4FIHmtiJG9Ry4Vy38Mb5SBBoFH6gyke1KYbiZLsP+6+QBdzUC+3idKsI+/vqFcBtxmgPqtCPrb3LSzyLc2kTInIAqC/w5Ptw+/mox33ZG7AXK2IMwlJUKM0W5K/PyPPz+Y9MlOwO1ysDVjfFUeZh9vFoWaosJcYNsvif0SOPgY8E5sJTkg6U4D0+ETiXs1V4UrtvHy0PXUqL3AiH2hWbxURhITYSJ81kwK8/FF6HRIGcdGdZXLQ9dy4jzAuKEH9D8YGgXR0J/Yhy8zkjegshftiiIaIQbIvuUT29OlLetinsA6BAeNIuE0HHyuEPEfHHeJ4RhzvL9+6JIXx9rTYA/NGyDmC/J/wK4vrsrcnc/RHp5zm2LKMpVIpyTublxSG/PaUeI4YxkNWJCMscIZoz/Vb6HR0C5t6exhuM/1RDMU2x+wMaG/mvfATTYWtedGJJzAAAAAElFTkSuQmCC), auto;
-                justify-content: center;
-                text-align: center;
-            }
-            .eraser {
-                cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB6ElEQVR4nO3X0UrCUBjA8YESPUQ9RxDRU+wMDeHsrq6spRXk5pLdbTdFPYI36htIoV5VRFvSxYY70EUPEIXdFLiYZSlZunnO8Qz2wXf/+zN2OIfj4oknWgNVdVGQim2QLfQESXnK5EorXFQGAHVB2FUe+OyhN1iwXXgXcto6F0U8H5UIAKqJdL50Mw7PD0Vk9rVVjkW8KOtlUdG9VP7ozwCexS/xgze8z41QBPiFDxaRPlDXGMRHIAJMxDMcAabGMxgBAuMZigCh8cb8I1RVTYqKXgmPN/oLFcNL5f6P4HcKb1jvTo1GI1mtN1ub2vFMeDFAhH8BxIKvel7CdNyy5SDv4sp63dJOaEX0sOIHSysilVPvsOO/I66tLq4IccyPLUjKo/+eIIInHSFIRfJ4EhFQMbyNvZJJDY89Qjaq/lFNFY8tQp4jfuYImQF82Aio6DVm8EEjIIv4aSMgy/hJEXBWvD+mjc5I4gd7fnnbHb4AQhz4foCDXmgEDEdAXPivgAatAH9r9WYLG96fe9ddtmyEaOBNG1X89wSHe9qdzpLlIJdwQI0InlIEWTzhCDp4QhF08Zgj5oMfiQh/Os0XP+MRywY+ZARb+IARbOKnjGAbPyEiGviRCAc1LRs9mw46jRQ+nni4/nwA/HOfg/LSBy0AAAAASUVORK5CYII=), auto;
-                justify-content: center;
-                text-align: center;
-            }
-            .brush {
-                /* cursor: url(https://www.flaticon.com/free-icons/paint-brush), auto; */
-                cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADWElEQVR4nO2Wy0tUURzHj6OSpj10oVipc46WEGmG4BOaoIcWtoicc8ZxwlZCZhC0KIjMf6BFqzTN6KGEj5GMBCs0ykWmBbXoQaSGjZuQKCU0J78xV6a5o+M4k3eud2C+8NvMnMXnc87v/s4hJJRQQgnFGXTlm9Ga9hHdpetJsAVdeQKN0fOoJ8CdVFtQSUAO76xgkYA1txyNUe7wzmpN/4I2YzQJqp2vX1QdOe8w3BBJtBa0e9l5eTWEA8/O9GhKAr7CO+thCTBU16kJCXTkm/2Cd1RXITBct/YS8AX+eiTQvEn2mw54enJBYC0l4OvO3zcsgL44D/RXAgM1Lvi1koC10OJz27RnLwVeVNP1HLZjyaO20qTA3xOwFpSvOCrdLrAtK8KP7Nbh8y4CW+46W0Allm8bHdCg8yxwO2l5+GsueGdN5EWNoyonUt2ev7EBeHkReGIC7mW4ZJqigb4TK+68vKZKEgBOOxWVQL8hAjfjZ7y2Sl+FC3DwAvC8ekHKX3jBnHVXMQFJoqOgGE0x9mUFbiUAQ7U+fbA+wAOCvVVUwCeJR2VKwQOcVisuIEl0Fx5CU6xnifYsZeAF/QnjztiACHg9iRaqADwDOGsJGLybRPPmOTeBniOrhxeOShMBF5Akes056N7/A9Zc4LFRIXgGGPUZqghIEoOXd2CozqYYvGBAZWqUagKeJFYFLxhgogdVFZBLrBpeSFNoDoLVqn4Ss21VmWNFsb/l4COZYZg+nOgHPJOLfIWgNShJX6eaxOSBuOLR7HD7/+08W2as0nHHxQaDIUIdiX0bi8eyI+yKwAu3E3kFkapXRWL26NYscDbhcTcFa4Rgp8D1xeD0qn+nwcZgYQmqSDjmOTizQbBJCdSUvmfJGkLCIGirnycxoFo7Od40K73tYU6JA6ff/JIw0dNES4Fgl7wA2yHoJwj2S/bbJCyJMUQrgXFbPASd8tAuM+CsSFpTkZIEwT64nhzUQrQUePqgOXvgvoadlf3XTrQUiLRkCPZ90dR67fjQ/63h7IpM4A3RWmCiZeDsz6KTaIRRbwCn56SWcgm8J1oMOD0OzqZ9uBO01ULywLydgbNer5OJ6/cSrQecFUHQ5oWHnQQ+Lz0p1uLJrcilaNHQ7A8lFKK9/AUVVsk7WByb2QAAAABJRU5ErkJggg==), auto;
-                justify-content: center;
-                text-align: center;
-            }
-            .feeding {
-                cursor: url('https://res.cloudinary.com/dvkugaw3b/image/upload/v1641562029/cursor-worm_kij6gi.png'), auto;
-            }
-            .parent {
-                width:1000px;
-                height:500px;
-                position: relative !important;
-            }
-            .children {
-                top: 0px;
-                left: 0px;
-                position: absolute !important; 
-            }
-            /* --- */
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                cursor: cell;
-            }
-            html {
-                height: 100%;
-            }
-            body {
-                min-height: 100%;
-                font-family: 'Courier New';
-                overflow-x: hidden;
-            }
-            .custom-cursor {
-            position: fixed;
-            opacity: 0;
-            pointer-events: none;
-            mix-blend-mode: difference;
-            width: 1px;
-            height: 1px;
-            border-radius: 50%;
-            background-color: white;
-            transition: transform 350ms ease;
-            transform: translate(-50%, -50%) scale(.3);
-            z-index: 1000;
-            }
-            .custom-cursor:before{
-            content:"";
-            mix-blend-mode:difference;
-            margin:auto;
-            position:absolute;
-            top:0;
-            left:0;
-            right:0;
-            bottom:0;
-            width:100%;
-            height:100%;
-                box-shadow:0 0 20px 40px rgba(255,255,255,1);
-            border-radius: 50%;
-            filter:blur(5px);
-            }
-            .custom-cursor--link {
-            transform: translate(-50%, -50%) scale(1);
-            }
-            .block {
-            display: -webkit-flex;
-            display: -moz-flex;
-            display: -ms-flex;
-            display: -o-flex;
-            display: flex;
-            -ms-align-items: center;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            height: 80vh;
-            min-height: 300px;
-            }
-            .block--black {
-            background-color: black;
-            color: white;
-            }
-            .block--white {
-            background-color: white;
-            color: black;
-            }
-            .block__title,
-            .block__link {
-                color: currentColor;
-            }
-            .block__title {
-                margin-bottom: 1em;
-                font-size: 4rem;
-                font-weight: 300;
-                text-align: center;
-            }
-            .block__link {
-                padding: .5em;
-                text-decoration: none;
-                transition: letter-spacing 200ms ease;
-            }
-            .block__link:hover {
-                letter-spacing: .1em;
-            }
-        </style> -->
-        <Link href="./index.css"></Link>
     </head>
     <body>
         <div class="container">
-
-            <!-- <div class="col-md-12"
-                style="border: 1px #ff0101 solid;padding: 5px;"> -->
             <div class="row">
                 <h1 style="text-align:center;color:white;">PIZARRA</h1>
                 <hr>
@@ -255,7 +78,6 @@
 
             <div class="row g-2">
                 <div class="col-md-3">
-                    <!-- <select class="form-control" id="dibujos"></select> -->
                     <input type="file" class="form-control" id="upload_paint"
                         accept="image/x-png,image/gif,image/jpeg">
                 </div>
@@ -269,8 +91,6 @@
                     <!-- <canvas id="canvas" class="canvas">The browser doesn't support the canvas element</canvas> -->
                 </div>
             </div>
-
-            <!-- </div> -->
         </div>
     </body>
 </html>
